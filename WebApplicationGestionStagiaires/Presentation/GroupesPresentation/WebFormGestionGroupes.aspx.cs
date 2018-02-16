@@ -10,23 +10,33 @@ namespace WebApplicationGestionStagiaires.Presentation.GroupesPresentation
 {
     public partial class WebFormGestionGroupes : System.Web.UI.Page
     {
+        // Solution 1 
+        bool isUpdated = false;
+
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(!IsPostBack)
+           
             this.Actualiser();
         }
 
         private void Actualiser(){
 
-            GridView1.DataSource = GroupesOperations.Afficher();
-            GridView1.DataBind();
+            if (isUpdated)
+            {
+                GridView1.DataSource = GroupesOperations.Afficher();
+                GridView1.DataBind();
+                this.ChargerGroupe(GroupesOperations.Debut());
 
-            this.ChargerGroupe(GroupesOperations.Debut());
+                this.isUpdated = false;
+            }
+              
         
         }
 
         protected void btNouveau_Click(object sender, EventArgs e)
         {
+
             txtNom.Text = "";
             lblDateCréation.Text = DateTime.Now.ToShortTimeString() ;
             lblDateModification.Text = "";
@@ -37,6 +47,7 @@ namespace WebApplicationGestionStagiaires.Presentation.GroupesPresentation
             Groupe g = new Groupe();
             g.Nom = txtNom.Text;
             GroupesOperations.Ajouter(g);
+            this.isUpdated = true;
             this.Actualiser();
         }
 
@@ -79,6 +90,7 @@ namespace WebApplicationGestionStagiaires.Presentation.GroupesPresentation
         protected void brSupprimer_Click(object sender, EventArgs e)
         {
             GroupesOperations.Supprimer(int.Parse(lblId.Text));
+            this.isUpdated = true;
             this.Actualiser();
         }
 

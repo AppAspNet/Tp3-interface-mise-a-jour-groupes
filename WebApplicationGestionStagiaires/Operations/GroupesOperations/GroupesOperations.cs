@@ -13,6 +13,7 @@ namespace WebApplicationGestionStagiaires.Operations.GroupesOperations
             g.DateCréation = DateTime.Now;
             g.Id = ++Nbr;
             ListeGroupes.Add(g);
+            
         }
         public static void Supprimer(int id) {
 
